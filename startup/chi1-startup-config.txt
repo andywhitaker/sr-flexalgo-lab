@@ -99,6 +99,11 @@ configure {
                     prefix-length 24
                 }
             }
+            if-attribute {
+                delay {
+                    static 10000
+                }
+            }
         }
         interface "To-NYC1" {
             port 1/1/c2/1
@@ -108,6 +113,11 @@ configure {
                     prefix-length 24
                 }
             }
+            if-attribute {
+                delay {
+                    static 10000
+                }
+            }
         }
         interface "To-CHI2" {
             port 1/1/c4/1
@@ -115,6 +125,11 @@ configure {
                 primary {
                     address 10.21.22.21
                     prefix-length 24
+                }
+            }
+            if-attribute {
+                delay {
+                    static 10000
                 }
             }
         }
@@ -171,6 +186,18 @@ configure {
             advertise-router-capability as
             traffic-engineering true
             area-address [49.0000]
+            flexible-algorithms {
+                admin-state enable
+                flex-algo 128 {
+                    participate true
+                    advertise "FlexAlgo-128"
+                    loopfree-alternate { }
+                }
+            }
+            traffic-engineering-options {
+                application-link-attributes {
+                }
+            }
             segment-routing {
                 admin-state enable
                 prefix-sid-range {
@@ -191,6 +218,11 @@ configure {
                 ipv4-node-sid {
                     index 21
                 }
+                flex-algo 128 {
+                    ipv4-node-sid {
+                        index 121
+                    }
+                }
             }
         }
         mpls {
@@ -209,6 +241,15 @@ configure {
             interface "To-NYC1" {
             }
             interface "To-CHI2" {
+            }
+        }
+    }
+    routing-options {
+        flexible-algorithm-definitions {
+            flex-algo "FlexAlgo-128" {
+                admin-state enable
+                description "FlexAlgo-128-Delay-Metric"
+                metric-type delay
             }
         }
     }
