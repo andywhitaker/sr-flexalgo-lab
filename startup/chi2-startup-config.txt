@@ -59,13 +59,13 @@ configure {
     port 1/1/c1/1 {
         admin-state enable
     }
-    port 1/1/c3 {
+    port 1/1/c2 {
         admin-state enable
         connector {
             breakout c1-100g
         }
     }
-    port 1/1/c3/1 {
+    port 1/1/c2/1 {
         admin-state enable
     }
     port 1/1/c4 {
@@ -77,40 +77,86 @@ configure {
     port 1/1/c4/1 {
         admin-state enable
     }
+    port 1/1/c10 {
+        admin-state enable
+        connector {
+            breakout c4-10g
+        }
+    }
+    port 1/1/c10/1 {
+        admin-state enable
+        ethernet {
+            mode access
+        }
+    }
     router "Base" {
-        interface "To-P2" {
-            port 1/1/c4/1
-            ipv4 {
-                primary {
-                    address 10.0.0.4
-                    prefix-length 31
-                }
-            }
-        }
-        interface "To-P3" {
-            port 1/1/c3/1
-            ipv4 {
-                primary {
-                    address 10.0.0.6
-                    prefix-length 31
-                }
-            }
-        }
-        interface "To-PE1" {
+        autonomous-system 65500
+        interface "To-DAL2" {
             port 1/1/c1/1
             ipv4 {
                 primary {
-                    address 10.0.0.1
-                    prefix-length 31
+                    address 10.12.22.22
+                    prefix-length 24
+                }
+            }
+        }
+        interface "To-NYC2" {
+            port 1/1/c2/1
+            ipv4 {
+                primary {
+                    address 10.22.32.22
+                    prefix-length 24
+                }
+            }
+        }
+        interface "To-CHI1" {
+            port 1/1/c4/1
+            ipv4 {
+                primary {
+                    address 10.21.22.22
+                    prefix-length 24
                 }
             }
         }
         interface "system" {
             ipv4 {
                 primary {
-                    address 11.11.11.11
+                    address 22.22.22.22
                     prefix-length 32
                 }
+            }
+        }
+        bgp {
+            group "evpn" {
+                peer-as 65500
+                family {
+                    evpn true
+                }
+            }
+            neighbor "11.11.11.11" {
+                group "evpn"
+                multihop 6
+                local-address 22.22.22.22
+            }
+            neighbor "12.12.12.12" {
+                group "evpn"
+                multihop 6
+                local-address 22.22.22.22
+            }
+            neighbor "21.21.21.21" {
+                group "evpn"
+                multihop 6
+                local-address 22.22.22.22
+            }
+            neighbor "31.31.31.31" {
+                group "evpn"
+                multihop 6
+                local-address 22.22.22.22
+            }
+            neighbor "32.32.32.32" {
+                group "evpn"
+                multihop 6
+                local-address 22.22.22.22
             }
         }
         mpls-labels {
@@ -131,43 +177,87 @@ configure {
                     global
                 }
             }
-            interface "To-P2" {
+            interface "To-DAL2" {
                 interface-type point-to-point
             }
-            interface "To-P3" {
+            interface "To-NYC2" {
                 interface-type point-to-point
             }
-            interface "To-PE1" {
+            interface "To-CHI1" {
                 interface-type point-to-point
             }
             interface "system" {
                 interface-type point-to-point
                 ipv4-node-sid {
-                    index 201
+                    index 22
                 }
             }
         }
         mpls {
             admin-state enable
-            interface "To-P2" {
+            interface "To-DAL2" {
             }
-            interface "To-P3" {
+            interface "To-NYC2" {
             }
-            interface "To-PE1" {
+            interface "To-CHI1" {
             }
         }
         rsvp {
             admin-state enable
-            interface "To-P2" {
+            interface "To-DAL2" {
             }
-            interface "To-P3" {
+            interface "To-NYC2" {
             }
-            interface "To-PE1" {
+            interface "To-CHI1" {
+            }
+        }
+    }
+    service {
+        customer "tenant1" {
+            customer-id 200
+        }
+        vprn "tenant1" {
+            admin-state enable
+            service-id 200
+            customer "tenant1"
+            bgp-evpn {
+                mpls 1 {
+                    admin-state enable
+                    route-distinguisher "22.22.22.22:200"
+                    evi 200
+                    vrf-target {
+                        community "target:65500:200"
+                    }
+                    auto-bind-tunnel {
+                        resolution filter
+                        resolution-filter {
+                            sr-isis true
+                        }
+                    }
+                }
+            }
+            bgp-ipvpn {
+                mpls {
+                    route-distinguisher "22.22.22.22:200"
+                    vrf-target {
+                        community "target:65500:200"
+                    }
+                }
+            }
+            interface "to-client-chi2" {
+                ipv4 {
+                    primary {
+                        address 192.168.22.254
+                        prefix-length 24
+                    }
+                }
+                sap 1/1/c10/1 {
+                }
             }
         }
     }
     system {
-        name "p1-sr1"
+        name "chi2-sr1"
         grpc {
             admin-state enable
             allow-unsecure-connection
@@ -442,15 +532,6 @@ configure {
                 }
             }
         }
-    }
-}
-
-persistent-indices {
-    description "Persistent indices are maintained by the system and must not be modified."
-    vrtr-if-id {
-        router-name "Base" interface-name "To-P2" vrtr-id 1 if-index 4
-        router-name "Base" interface-name "To-P3" vrtr-id 1 if-index 2
-        router-name "Base" interface-name "To-PE1" vrtr-id 1 if-index 3
     }
 }
 

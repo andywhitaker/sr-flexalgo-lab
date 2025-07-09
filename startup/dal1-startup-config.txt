@@ -3,9 +3,9 @@
 # Built on Thu Mar 14 20:27:01 UTC 2024 by builder in /builds/243B/R1/panos/main/sros
 # Configuration format version 24.3 revision 0
 
-# Generated 2024-11-28T22:53:54.2Z by admin from 200::
+# Generated 2024-11-28T22:53:53.5Z by admin from 200::
 # Commit ID 9
-#   Committed 2024-11-28T22:32:15.1Z by admin (MD-CLI) from 200::
+#   Committed 2024-11-28T22:32:14.5Z by admin (MD-CLI) from 200::
 
 configure {
     card 1 {
@@ -59,15 +59,6 @@ configure {
     port 1/1/c1/1 {
         admin-state enable
     }
-    port 1/1/c3 {
-        admin-state enable
-        connector {
-            breakout c1-100g
-        }
-    }
-    port 1/1/c3/1 {
-        admin-state enable
-    }
     port 1/1/c4 {
         admin-state enable
         connector {
@@ -77,40 +68,77 @@ configure {
     port 1/1/c4/1 {
         admin-state enable
     }
+    port 1/1/c10 {
+        admin-state enable
+        connector {
+            breakout c4-10g
+        }
+    }
+    port 1/1/c10/1 {
+        admin-state enable
+        ethernet {
+            mode access
+        }
+    }
     router "Base" {
-        interface "To-P1" {
-            port 1/1/c3/1
-            ipv4 {
-                primary {
-                    address 10.0.0.7
-                    prefix-length 31
-                }
-            }
-        }
-        interface "To-P4" {
-            port 1/1/c4/1
-            ipv4 {
-                primary {
-                    address 10.0.0.10
-                    prefix-length 31
-                }
-            }
-        }
-        interface "To-PE2" {
+        autonomous-system 65500
+        interface "To-CHI1" {
             port 1/1/c1/1
             ipv4 {
                 primary {
-                    address 10.0.0.13
-                    prefix-length 31
+                    address 10.11.21.11
+                    prefix-length 24
+                }
+            }
+        }
+        interface "To-DAL2" {
+            port 1/1/c4/1
+            ipv4 {
+                primary {
+                    address 10.11.12.11
+                    prefix-length 24
                 }
             }
         }
         interface "system" {
             ipv4 {
                 primary {
-                    address 33.33.33.33
+                    address 11.11.11.11
                     prefix-length 32
                 }
+            }
+        }
+        bgp {
+            group "evpn" {
+                peer-as 65500
+                family {
+                    evpn true
+                }
+            }
+            neighbor "12.12.12.12" {
+                group "evpn"
+                multihop 6
+                local-address 11.11.11.11
+            }
+            neighbor "21.21.21.21" {
+                group "evpn"
+                multihop 6
+                local-address 11.11.11.11
+            }
+            neighbor "22.22.22.22" {
+                group "evpn"
+                multihop 6
+                local-address 11.11.11.11
+            }
+            neighbor "31.31.31.31" {
+                group "evpn"
+                multihop 6
+                local-address 11.11.11.11
+            }
+            neighbor "32.32.32.32" {
+                group "evpn"
+                multihop 6
+                local-address 11.11.11.11
             }
         }
         mpls-labels {
@@ -131,43 +159,81 @@ configure {
                     global
                 }
             }
-            interface "To-P1" {
+            interface "To-CHI1" {
                 interface-type point-to-point
             }
-            interface "To-P4" {
-                interface-type point-to-point
-            }
-            interface "To-PE2" {
+            interface "To-DAL2" {
                 interface-type point-to-point
             }
             interface "system" {
                 interface-type point-to-point
                 ipv4-node-sid {
-                    index 203
+                    index 11
                 }
             }
         }
         mpls {
             admin-state enable
-            interface "To-P1" {
+            interface "To-CHI1" {
             }
-            interface "To-P4" {
+            interface "To-DAL2" {
             }
-            interface "To-PE2" {
-            }
+
         }
         rsvp {
             admin-state enable
-            interface "To-P1" {
+            interface "To-CHI1" {
             }
-            interface "To-P4" {
+            interface "To-DAL2" {
             }
-            interface "To-PE2" {
+        }
+    }
+    service {
+        customer "tenant1" {
+            customer-id 200
+        }
+        vprn "tenant1" {
+            admin-state enable
+            service-id 200
+            customer "tenant1"
+            bgp-evpn {
+                mpls 1 {
+                    admin-state enable
+                    route-distinguisher "11.11.11.11:200"
+                    evi 200
+                    vrf-target {
+                        community "target:65500:200"
+                    }
+                    auto-bind-tunnel {
+                        resolution filter
+                        resolution-filter {
+                            sr-isis true
+                        }
+                    }
+                }
+            }
+            bgp-ipvpn {
+                mpls {
+                    route-distinguisher "11.11.11.11:200"
+                    vrf-target {
+                        community "target:65500:200"
+                    }
+                }
+            }
+            interface "to-client-dal1" {
+                ipv4 {
+                    primary {
+                        address 192.168.11.254
+                        prefix-length 24
+                    }
+                }
+                sap 1/1/c10/1 {
+                }
             }
         }
     }
     system {
-        name "p3-sr1"
+        name "dal1-sr1"
         grpc {
             admin-state enable
             allow-unsecure-connection
@@ -445,13 +511,4 @@ configure {
     }
 }
 
-persistent-indices {
-    description "Persistent indices are maintained by the system and must not be modified."
-    vrtr-if-id {
-        router-name "Base" interface-name "To-P1" vrtr-id 1 if-index 2
-        router-name "Base" interface-name "To-P4" vrtr-id 1 if-index 3
-        router-name "Base" interface-name "To-PE2" vrtr-id 1 if-index 4
-    }
-}
-
-# Finished 2024-11-28T22:53:54.3Z
+# Finished 2024-11-28T22:53:53.5Z

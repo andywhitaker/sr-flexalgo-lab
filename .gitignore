@@ -5,4 +5,4 @@
 .*.clab.yml.bak
 
 # Exclude clab artifact folder
-clab-sr-evpn-flexalgo-lab/
+clab-sr-flexalgo-lab/

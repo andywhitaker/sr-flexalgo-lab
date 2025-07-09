@@ -1,0 +1,70 @@
+name: sr-flexalgo-lab
+
+prefix: ""
+topology:
+  defaults:
+    kind: nokia_sros
+  kinds:
+    nokia_sros:
+      image: vrnetlab/nokia_sros:25.3.R2
+      type: sr-1
+      license: sros25.lic
+    linux:
+      image: ghcr.io/srl-labs/network-multitool
+  nodes:
+    dal1:
+      startup-config: startup/dal1-startup-config.txt
+    dal2:
+      startup-config: startup/dal2-startup-config.txt
+    chi1:
+      startup-config: startup/chi1-startup-config.txt
+    chi2:
+      startup-config: startup/chi2-startup-config.txt
+    nyc1:
+      startup-config: startup/nyc1-startup-config.txt
+    nyc2:
+      startup-config: startup/nyc2-startup-config.txt
+    client-dal1:
+      kind: linux
+      exec:
+        - ip address add 192.168.11.11/24 dev eth1
+        - ip route add 192.168.0.0/16 via 192.168.11.254 dev eth1
+    client-dal2:
+      kind: linux
+      exec:
+        - ip address add 192.168.12.12/24 dev eth1
+        - ip route add 192.168.0.0/16 via 192.168.12.254 dev eth1
+    client-chi1:
+      kind: linux
+      exec:
+        - ip address add 192.168.21.21/24 dev eth1
+        - ip route add 192.168.0.0/16 via 192.168.21.254 dev eth1
+    client-chi2:
+      kind: linux
+      exec:
+        - ip address add 192.168.22.22/24 dev eth1
+        - ip route add 192.168.0.0/16 via 192.168.22.254 dev eth1
+    client-nyc1:
+      kind: linux
+      exec:
+        - ip address add 192.168.31.31/24 dev eth1
+        - ip route add 192.168.0.0/16 via 192.168.31.254 dev eth1
+    client-nyc2:
+      kind: linux
+      exec:
+        - ip address add 192.168.32.32/24 dev eth1
+        - ip route add 192.168.0.0/16 via 192.168.32.254 dev eth1
+  links:
+    - endpoints: ["dal1:eth1", "chi1:eth1"]
+    - endpoints: ["dal2:eth1", "chi2:eth1"]
+    - endpoints: ["chi1:eth2", "nyc1:eth1"]
+    - endpoints: ["chi2:eth2", "nyc2:eth1"]
+    - endpoints: ["dal1:eth4", "dal2:eth4"]
+    - endpoints: ["chi1:eth4", "chi2:eth4"]
+    - endpoints: ["nyc1:eth4", "nyc2:eth4"]
+    - endpoints: ["client-dal1:eth1", "dal1:eth10"]
+    - endpoints: ["client-dal2:eth1", "dal2:eth10"]
+    - endpoints: ["client-chi1:eth1", "chi1:eth10"]
+    - endpoints: ["client-chi2:eth1", "chi2:eth10"]
+    - endpoints: ["client-nyc1:eth1", "nyc1:eth10"]
+    - endpoints: ["client-nyc2:eth1", "nyc2:eth10"]
