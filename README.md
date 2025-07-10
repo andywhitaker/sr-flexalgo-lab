@@ -27,7 +27,7 @@ vrnetlab/nokia_sros                 25.3.R2        2bb661ed612e   6 weeks ago   
 
 Once the correct SROS image has been loaded you must ensure you have the license file called `sros25.lic` downloaded and loaded into the project folder.
 
-To deploy the lab type:
+With the image and license file correctly loaded, to deploy the lab type:
 
 ```bash
 sudo clab deploy -c
