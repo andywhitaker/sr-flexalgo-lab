@@ -134,7 +134,7 @@ Interfaces : 4
 ```
 
 
-### Verifying IS-IS
+## Verifying IS-IS
 
 Check IS-IS status on CHI1 (SROS):
 
@@ -185,7 +185,7 @@ Adjacencies : 3
 ===============================================================================
 ```
 
-### Verifying Segment Routing
+## Verifying Segment Routing
 
 Check tunnel table on CHI1 (SROS):
 
@@ -223,7 +223,7 @@ Flags: B = BGP or MPLS backup hop available
 ===============================================================================
 ```
 
-### Verifying BGP
+## Verifying BGP
 
 Check BGP status on CHI1 (SROS)
 
@@ -359,7 +359,7 @@ Routes : 10
 ===============================================================================
 ```
 
-### Verifying EVPN-MPLS service
+## Verifying EVPN-MPLS service
 
 Check service status on CHI1 (SROS)
 
@@ -393,9 +393,9 @@ sap:1/1/c10/1                            null         1514    1514    Up   Up
 ```
 
 
-### Ping Client2
+## Ping client-nyc2
 
-Login to Client1
+Login to client-dal1
 
 ```bash
 docker exec -it client-dal1 bash
@@ -420,3 +420,13 @@ PING 192.168.32.32 (192.168.32.32) 56(84) bytes of data.
 rtt min/avg/max/mdev = 5.521/5.740/6.160/0.296 ms
 ```
 
+## Client Machine IPs
+
+| Client      | IP Address    |
+| ----------- | ------------- |
+| client-dal1 | 192.168.11.11 |
+| client-dal2 | 192.168.12.12 |
+| client-chi1 | 192.168.21.21 |
+| client-chi2 | 192.168.22.22 |
+| client-nyc1 | 192.168.31.31 |
+| client-nyc2 | 192.168.32.32 |
