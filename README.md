@@ -2,11 +2,30 @@
 
 
 ## Deploying the Segment Routing with EVPN and FlexAlgo lab
-We will deploy a multi-node lab with SR OS images. Containerlab makes it possible to have a VM based docker node and a native docker node in the same lab.
+We will deploy a multi-node lab with SROS routers running Segment Routing with EVPN and Flex Algo.
 
 This is how the topology will look:
 ![topology](sr-flexalgo-lab.clab.drawio.svg)
 
+
+In order to deploy the lab you will need to have a copy of the SROS 25.3.R2 image. This can be imported into docker using the following command:
+
+``` bash
+sudo docker load -i sros.tar.gz
+```
+
+To validate the image has been loaded you can run:
+``` bash
+docker image list
+```
+You should see the following:
+
+``` text
+REPOSITORY                          TAG            IMAGE ID       CREATED         SIZE
+vrnetlab/nokia_sros                 25.3.R2        2bb661ed612e   6 weeks ago     971MB
+```
+
+Once the correct SROS image has been loaded you must ensure you have the license file called `sros25.lic` downloaded and loaded into the project folder.
 
 To deploy the lab type:
 
