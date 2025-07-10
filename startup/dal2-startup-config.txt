@@ -1,11 +1,11 @@
-# TiMOS-B-24.3.R1 both/x86_64 Nokia 7750 SR Copyright (c) 2000-2024 Nokia.
+# TiMOS-B-25.3.R2 both/x86_64 Nokia 7750 SR Copyright (c) 2000-2025 Nokia.
 # All rights reserved. All use subject to applicable license agreements.
-# Built on Thu Mar 14 20:27:01 UTC 2024 by builder in /builds/243B/R1/panos/main/sros
-# Configuration format version 24.3 revision 0
+# Built on Wed Apr 23 20:04:18 UTC 2025 by builder in /builds/253B/R2/panos/main/sros
+# Configuration format version 25.3 revision 0
 
-# Generated 2024-11-28T22:53:53.5Z by admin from 200::
-# Commit ID 9
-#   Committed 2024-11-28T22:32:14.5Z by admin (MD-CLI) from 200::
+# Generated 2025-07-10T05:34:25.7+00:00 by admin from 200::
+# Last modified 2025-07-10T05:15:06.7+00:00 by admin (MD-CLI) from 200::
+# Last saved 2025-07-10T05:15:06.8+00:00 by admin from 200::
 
 configure {
     card 1 {
@@ -47,6 +47,35 @@ configure {
                 memory {
                     max-entries 500
                 }
+            }
+        }
+    }
+    policy-options {
+        community "tenant1-community" {
+            member "target:65500:200" { }
+        }
+        policy-statement "Tenant1-Export" {
+            default-action {
+                action-type accept
+                community {
+                    add ["tenant1-community"]
+                }
+            }
+        }
+        policy-statement "Tenant1-Import" {
+            entry 10 {
+                from {
+                    community {
+                        name "tenant1-community"
+                    }
+                }
+                action {
+                    action-type accept
+                    flex-algo 128
+                }
+            }
+            default-action {
+                action-type reject
             }
         }
     }
@@ -118,6 +147,13 @@ configure {
                 }
             }
         }
+        mpls-labels {
+            static-label-range 17968
+            sr-labels {
+                start 18000
+                end 21000
+            }
+        }
         bgp {
             group "evpn" {
                 peer-as 65500
@@ -149,13 +185,6 @@ configure {
                 group "evpn"
                 multihop 6
                 local-address 12.12.12.12
-            }
-        }
-        mpls-labels {
-            static-label-range 17968
-            sr-labels {
-                start 18000
-                end 21000
             }
         }
         isis 0 {
@@ -205,7 +234,6 @@ configure {
             }
             interface "To-DAL1" {
             }
-
         }
         rsvp {
             admin-state enable
@@ -237,11 +265,15 @@ configure {
                     admin-state enable
                     route-distinguisher "12.12.12.12:200"
                     evi 200
-                    vrf-target {
-                        community "target:65500:200"
+                    vrf-export {
+                        policy ["Tenant1-Export"]
+                    }
+                    vrf-import {
+                        policy ["Tenant1-Import"]
                     }
                     auto-bind-tunnel {
                         resolution filter
+                        allow-flex-algo-fallback true
                         resolution-filter {
                             sr-isis true
                         }
@@ -251,8 +283,11 @@ configure {
             bgp-ipvpn {
                 mpls {
                     route-distinguisher "12.12.12.12:200"
-                    vrf-target {
-                        community "target:65500:200"
+                    vrf-import {
+                        policy ["Tenant1-Import"]
+                    }
+                    vrf-export {
+                        policy ["Tenant1-Export"]
                     }
                 }
             }
@@ -527,6 +562,9 @@ configure {
                 }
             }
             user-params {
+                attempts {
+                    count 64
+                }
                 local-user {
                     user "admin" {
                         password "$2y$10$TQrZlpBDra86.qoexZUzQeBXDY1FcdDhGWdD9lLxMuFyPVSm0OGy6"
@@ -547,4 +585,16 @@ configure {
     }
 }
 
-# Finished 2024-11-28T22:53:53.5Z
+persistent-indices {
+    description "Persistent indices are maintained by the system and must not be modified."
+    vrtr-id {
+        router-name "tenant1" vrtr-id 2
+    }
+    vrtr-if-id {
+        router-name "Base" interface-name "To-CHI2" vrtr-id 1 if-index 2
+        router-name "Base" interface-name "To-DAL1" vrtr-id 1 if-index 3
+        router-name "tenant1" interface-name "to-client-dal2" vrtr-id 2 if-index 4
+    }
+}
+
+# Finished 2025-07-10T05:34:25.8+00:00
