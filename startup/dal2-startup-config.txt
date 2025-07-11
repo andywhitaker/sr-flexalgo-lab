@@ -197,7 +197,6 @@ configure {
                 flex-algo 128 {
                     participate true
                     advertise "FlexAlgo-128"
-                    loopfree-alternate { }
                 }
             }
             traffic-engineering-options {
@@ -273,7 +272,6 @@ configure {
                     }
                     auto-bind-tunnel {
                         resolution filter
-                        allow-flex-algo-fallback true
                         resolution-filter {
                             sr-isis true
                         }
