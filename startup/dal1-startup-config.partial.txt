@@ -221,6 +221,9 @@ configure {
                     }
                 }
             }
+            level 1 {
+                wide-metrics-only true
+            }
         }
         mpls {
             admin-state enable
