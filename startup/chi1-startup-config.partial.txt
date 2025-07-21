@@ -1,0 +1,340 @@
+configure {
+    policy-options {
+        community "tenant1-community" {
+            member "target:65500:200" { }
+        }
+        policy-statement "Tenant1-Export" {
+            default-action {
+                action-type accept
+                community {
+                    add ["tenant1-community"]
+                }
+            }
+        }
+        policy-statement "Tenant1-Import" {
+            entry 10 {
+                from {
+                    community {
+                        name "tenant1-community"
+                    }
+                }
+                action {
+                    action-type accept
+                    flex-algo 128
+                }
+            }
+            default-action {
+                action-type reject
+            }
+        }
+    }
+    port 1/1/c1 {
+        admin-state enable
+        connector {
+            breakout c1-100g
+        }
+    }
+    port 1/1/c1/1 {
+        admin-state enable
+        ethernet {
+            lldp {
+                dest-mac nearest-bridge {
+                    receive true
+                    transmit true
+                    tx-tlvs {
+                        port-desc true
+                        sys-name true
+                        sys-desc true
+                        sys-cap true
+                    }
+                }
+            }
+        }
+    }
+    port 1/1/c2 {
+        admin-state enable
+        connector {
+            breakout c1-100g
+        }
+    }
+    port 1/1/c2/1 {
+        admin-state enable
+        ethernet {
+            lldp {
+                dest-mac nearest-bridge {
+                    receive true
+                    transmit true
+                    tx-tlvs {
+                        port-desc true
+                        sys-name true
+                        sys-desc true
+                        sys-cap true
+                    }
+                }
+            }
+        }
+    }
+    port 1/1/c4 {
+        admin-state enable
+        connector {
+            breakout c1-100g
+        }
+    }
+    port 1/1/c4/1 {
+        admin-state enable
+        ethernet {
+            lldp {
+                dest-mac nearest-bridge {
+                    receive true
+                    transmit true
+                    tx-tlvs {
+                        port-desc true
+                        sys-name true
+                        sys-desc true
+                        sys-cap true
+                    }
+                }
+            }
+        }
+    }
+    port 1/1/c6 {
+        admin-state enable
+        connector {
+            breakout c4-10g
+        }
+    }
+    port 1/1/c6/1 {
+        admin-state enable
+        ethernet {
+            mode access
+            lldp {
+                dest-mac nearest-bridge {
+                    receive true
+                    transmit true
+                    tx-tlvs {
+                        port-desc true
+                        sys-name true
+                        sys-desc true
+                        sys-cap true
+                    }
+                }
+            }
+        }
+    }
+    router "Base" {
+        autonomous-system 65500
+        interface "To-CHI2" {
+            port 1/1/c4/1
+            ipv4 {
+                primary {
+                    address 10.21.22.21
+                    prefix-length 24
+                }
+            }
+            if-attribute {
+                delay {
+                    static 10000
+                }
+            }
+        }
+        interface "To-DAL1" {
+            port 1/1/c1/1
+            ipv4 {
+                primary {
+                    address 10.11.21.21
+                    prefix-length 24
+                }
+            }
+            if-attribute {
+                delay {
+                    static 1000000
+                }
+            }
+        }
+        interface "To-NYC1" {
+            port 1/1/c2/1
+            ipv4 {
+                primary {
+                    address 10.21.31.21
+                    prefix-length 24
+                }
+            }
+            if-attribute {
+                delay {
+                    static 1000000
+                }
+            }
+        }
+        interface "system" {
+            ipv4 {
+                primary {
+                    address 21.21.21.21
+                    prefix-length 32
+                }
+            }
+        }
+        mpls-labels {
+            static-label-range 17968
+            sr-labels {
+                start 18000
+                end 21000
+            }
+        }
+        bgp {
+            group "evpn" {
+                peer-as 65500
+                family {
+                    evpn true
+                }
+            }
+            neighbor "11.11.11.11" {
+                group "evpn"
+                multihop 6
+                local-address 21.21.21.21
+            }
+            neighbor "12.12.12.12" {
+                group "evpn"
+                multihop 6
+                local-address 21.21.21.21
+            }
+            neighbor "22.22.22.22" {
+                group "evpn"
+                multihop 6
+                local-address 21.21.21.21
+            }
+            neighbor "31.31.31.31" {
+                group "evpn"
+                multihop 6
+                local-address 21.21.21.21
+            }
+            neighbor "32.32.32.32" {
+                group "evpn"
+                multihop 6
+                local-address 21.21.21.21
+            }
+        }
+        isis 0 {
+            admin-state enable
+            advertise-router-capability as
+            traffic-engineering true
+            area-address [49.0000]
+            flexible-algorithms {
+                admin-state enable
+                flex-algo 128 {
+                    participate true
+                    advertise "FlexAlgo-128"
+                }
+            }
+            traffic-engineering-options {
+                application-link-attributes {
+                }
+            }
+            segment-routing {
+                admin-state enable
+                prefix-sid-range {
+                    global
+                }
+            }
+            interface "To-CHI2" {
+                interface-type point-to-point
+            }
+            interface "To-DAL1" {
+                interface-type point-to-point
+            }
+            interface "To-NYC1" {
+                interface-type point-to-point
+            }
+            interface "system" {
+                interface-type point-to-point
+                ipv4-node-sid {
+                    index 21
+                }
+                flex-algo 128 {
+                    ipv4-node-sid {
+                        index 121
+                    }
+                }
+            }
+            level 1 {
+                wide-metrics-only true
+            }
+        }
+        mpls {
+            admin-state enable
+            interface "To-CHI2" {
+            }
+            interface "To-DAL1" {
+            }
+            interface "To-NYC1" {
+            }
+        }
+        rsvp {
+            admin-state enable
+            interface "To-CHI2" {
+            }
+            interface "To-DAL1" {
+            }
+            interface "To-NYC1" {
+            }
+        }
+    }
+    routing-options {
+        flexible-algorithm-definitions {
+            flex-algo "FlexAlgo-128" {
+                admin-state enable
+                description "FlexAlgo-128-Delay-Metric"
+                metric-type delay
+            }
+        }
+    }
+    service {
+        customer "tenant1" {
+            customer-id 200
+        }
+        vprn "tenant1" {
+            admin-state enable
+            service-id 200
+            customer "tenant1"
+            bgp-evpn {
+                mpls 1 {
+                    admin-state enable
+                    route-distinguisher "21.21.21.21:200"
+                    evi 200
+                    vrf-export {
+                        policy ["Tenant1-Export"]
+                    }
+                    vrf-import {
+                        policy ["Tenant1-Import"]
+                    }
+                    auto-bind-tunnel {
+                        resolution filter
+                        resolution-filter {
+                            sr-isis true
+                        }
+                    }
+                }
+            }
+            bgp-ipvpn {
+                mpls {
+                    route-distinguisher "21.21.21.21:200"
+                    vrf-import {
+                        policy ["Tenant1-Import"]
+                    }
+                    vrf-export {
+                        policy ["Tenant1-Export"]
+                    }
+                }
+            }
+            interface "to-client-chi1" {
+                ipv4 {
+                    primary {
+                        address 192.168.21.254
+                        prefix-length 24
+                    }
+                }
+                sap 1/1/c6/1 {
+                }
+            }
+        }
+    }
+}

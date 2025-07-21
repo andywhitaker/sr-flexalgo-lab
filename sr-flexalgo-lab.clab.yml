@@ -7,23 +7,23 @@ topology:
   kinds:
     nokia_sros:
       image: vrnetlab/nokia_sros:25.3.R2
-      type: sr-1
+      type: ixr-xs
       license: sros25.lic
     linux:
       image: ghcr.io/srl-labs/network-multitool
   nodes:
     dal1:
-      startup-config: startup/dal1-startup-config.txt
+      startup-config: startup/dal1-startup-config.partial.txt
     dal2:
-      startup-config: startup/dal2-startup-config.txt
+      startup-config: startup/dal2-startup-config.partial.txt
     chi1:
-      startup-config: startup/chi1-startup-config.txt
+      startup-config: startup/chi1-startup-config.partial.txt
     chi2:
-      startup-config: startup/chi2-startup-config.txt
+      startup-config: startup/chi2-startup-config.partial.txt
     nyc1:
-      startup-config: startup/nyc1-startup-config.txt
+      startup-config: startup/nyc1-startup-config.partial.txt
     nyc2:
-      startup-config: startup/nyc2-startup-config.txt
+      startup-config: startup/nyc2-startup-config.partial.txt
     client-dal1:
       kind: linux
       exec:
@@ -62,9 +62,9 @@ topology:
     - endpoints: ["dal1:eth4", "dal2:eth4"]
     - endpoints: ["chi1:eth4", "chi2:eth4"]
     - endpoints: ["nyc1:eth4", "nyc2:eth4"]
-    - endpoints: ["client-dal1:eth1", "dal1:eth10"]
-    - endpoints: ["client-dal2:eth1", "dal2:eth10"]
-    - endpoints: ["client-chi1:eth1", "chi1:eth10"]
-    - endpoints: ["client-chi2:eth1", "chi2:eth10"]
-    - endpoints: ["client-nyc1:eth1", "nyc1:eth10"]
-    - endpoints: ["client-nyc2:eth1", "nyc2:eth10"]
+    - endpoints: ["client-dal1:eth1", "dal1:eth6"]
+    - endpoints: ["client-dal2:eth1", "dal2:eth6"]
+    - endpoints: ["client-chi1:eth1", "chi1:eth6"]
+    - endpoints: ["client-chi2:eth1", "chi2:eth6"]
+    - endpoints: ["client-nyc1:eth1", "nyc1:eth6"]
+    - endpoints: ["client-nyc2:eth1", "nyc2:eth6"]
