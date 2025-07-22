@@ -1,4 +1,10 @@
 configure {
+    card 1 {
+        card-type imm6-qsfpdd+48-sfp56
+        mda 1 {
+            mda-type m6-qsfpdd+48-sfp56
+        }
+    }
     policy-options {
         community "tenant1-community" {
             member "target:65500:200" { }
