@@ -1,0 +1,151 @@
+{
+  "freeTextAnnotations": [],
+  "groupStyleAnnotations": [],
+  "cloudNodeAnnotations": [],
+  "nodeAnnotations": [
+    {
+      "id": "dal1",
+      "icon": "router",
+      "position": {
+        "x": 245,
+        "y": 189
+      },
+      "geoCoordinates": {
+        "lat": 49.00649598027853,
+        "lng": 9.76251096692698
+      }
+    },
+    {
+      "id": "dal2",
+      "icon": "router",
+      "position": {
+        "x": 245,
+        "y": 315
+      },
+      "geoCoordinates": {
+        "lat": 48.88567174088071,
+        "lng": 9.82220729179273
+      }
+    },
+    {
+      "id": "chi1",
+      "icon": "router",
+      "position": {
+        "x": 357,
+        "y": 189
+      },
+      "geoCoordinates": {
+        "lat": 49.00598102631802,
+        "lng": 9.580126994046466
+      }
+    },
+    {
+      "id": "chi2",
+      "icon": "router",
+      "position": {
+        "x": 357,
+        "y": 315
+      },
+      "geoCoordinates": {
+        "lat": 48.82844253186874,
+        "lng": 9.264353707109382
+      }
+    },
+    {
+      "id": "nyc1",
+      "icon": "router",
+      "position": {
+        "x": 469,
+        "y": 189
+      },
+      "geoCoordinates": {
+        "lat": 48.937686259093375,
+        "lng": 9.50641939603107
+      }
+    },
+    {
+      "id": "nyc2",
+      "icon": "router",
+      "position": {
+        "x": 469,
+        "y": 315
+      },
+      "geoCoordinates": {
+        "lat": 49.39002963593118,
+        "lng": 9.126298760406002
+      }
+    },
+    {
+      "id": "client-dal1",
+      "icon": "router",
+      "position": {
+        "x": 147,
+        "y": 189
+      },
+      "geoCoordinates": {
+        "lat": 49.18884844478124,
+        "lng": 9.518008978564172
+      }
+    },
+    {
+      "id": "client-dal2",
+      "icon": "router",
+      "position": {
+        "x": 147,
+        "y": 315
+      },
+      "geoCoordinates": {
+        "lat": 49.459683894775914,
+        "lng": 9.765577874400357
+      }
+    },
+    {
+      "id": "client-chi1",
+      "icon": "router",
+      "position": {
+        "x": 357,
+        "y": 119
+      },
+      "geoCoordinates": {
+        "lat": 48.83280319381288,
+        "lng": 9.764617274642127
+      }
+    },
+    {
+      "id": "client-chi2",
+      "icon": "router",
+      "position": {
+        "x": 357,
+        "y": 399
+      },
+      "geoCoordinates": {
+        "lat": 49.44766442152039,
+        "lng": 9.425506265463277
+      }
+    },
+    {
+      "id": "client-nyc1",
+      "icon": "router",
+      "position": {
+        "x": 553,
+        "y": 189
+      },
+      "geoCoordinates": {
+        "lat": 49.29283442788124,
+        "lng": 9.243758401335857
+      }
+    },
+    {
+      "id": "client-nyc2",
+      "icon": "router",
+      "position": {
+        "x": 553,
+        "y": 315
+      },
+      "geoCoordinates": {
+        "lat": 49.56855640262684,
+        "lng": 9.473974615443588
+      }
+    }
+  ]
+}
