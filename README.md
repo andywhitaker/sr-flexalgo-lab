@@ -196,25 +196,27 @@ show router tunnel-table
 Expected output:
 
 ``` text
+A:admin@chi1# show router tunnel-table
+
 ===============================================================================
 IPv4 Tunnel Table (Router: Base)
 ===============================================================================
 Destination           Owner     Encap TunnelId  Pref   Nexthop        Metric
-   Color
+   Color                                                              
 -------------------------------------------------------------------------------
 10.11.21.11/32        isis (0)  MPLS  524289    11     10.11.21.11    0
-10.21.22.22/32        isis (0)  MPLS  524291    11     10.21.22.22    0
+10.21.22.22/32        isis (0)  MPLS  524295    11     10.21.22.22    0
 10.21.31.31/32        isis (0)  MPLS  524290    11     10.21.31.31    0
-11.11.11.11/32        isis (0)  MPLS  524302    11     10.11.21.11    10
-11.11.11.11/32        isis (0)  MPLS  524294    11     10.11.21.11    63
-12.12.12.12/32        isis (0)  MPLS  524303    11     10.11.21.11    20
-12.12.12.12/32        isis (0)  MPLS  524298    11     10.11.21.11    10063
-22.22.22.22/32        isis (0)  MPLS  524296    11     10.21.22.22    10
-22.22.22.22/32        isis (0)  MPLS  524293    11     10.21.22.22    63
-31.31.31.31/32        isis (0)  MPLS  524295    11     10.21.31.31    10
-31.31.31.31/32        isis (0)  MPLS  524292    11     10.21.31.31    63
-32.32.32.32/32        isis (0)  MPLS  524301    11     10.21.22.22    20
-32.32.32.32/32        isis (0)  MPLS  524299    11     10.21.22.22    10063
+11.11.11.11/32        isis (0)  MPLS  524294    11     10.11.21.11    10
+11.11.11.11/32        isis (0)  MPLS  524292    11     10.21.22.22    30000
+12.12.12.12/32        isis (0)  MPLS  524301    11     10.11.21.11    20
+12.12.12.12/32        isis (0)  MPLS  524298    11     10.21.22.22    20000
+22.22.22.22/32        isis (0)  MPLS  524299    11     10.21.22.22    10
+22.22.22.22/32        isis (0)  MPLS  524296    11     10.21.22.22    10000
+31.31.31.31/32        isis (0)  MPLS  524293    11     10.21.31.31    10
+31.31.31.31/32        isis (0)  MPLS  524291    11     10.21.22.22    30000
+32.32.32.32/32        isis (0)  MPLS  524300    11     10.21.22.22    20
+32.32.32.32/32        isis (0)  MPLS  524297    11     10.21.22.22    20000
 -------------------------------------------------------------------------------
 Flags: B = BGP or MPLS backup hop available
        L = Loop-Free Alternate (LFA) hop available
@@ -430,3 +432,30 @@ rtt min/avg/max/mdev = 5.521/5.740/6.160/0.296 ms
 | client-chi2 | 192.168.22.22 |
 | client-nyc1 | 192.168.31.31 |
 | client-nyc2 | 192.168.32.32 |
+
+
+## OAM LSP-Trace from DAL1 to NYC1
+This lab has IS-IS FlexAlgo enabled based on delay and we have increased the
+link delay between DAL1 and CHI1 and also between CHI1 and NYC1. This demonstrates
+we can influence traffic from client-dal1 to client-nyc1 along the longer path
+across the bottom of the topology (dal1 -> dal2 -> chi2 -> nyc2 -> nyc1) rather than
+the shortest path (dal1 -> chi1 -> nyc1) based on FlexAlgo metrics. To validate the
+traffic path you can do an OAM LSP-Trace on DAL1 to the loopback on NYC1:
+
+``` text
+A:admin@dal1# oam lsp-trace sr-isis prefix 31.31.31.31/32 source-ip-address 11.11.11.11 flex-algo 128 
+lsp-trace to 31.31.31.31/32: 1 hops min, 30 hops max, 104 byte packets
+1  12.12.12.12  rtt=2.85ms rc=8(DSRtrMatchLabel) rsc=1  
+2  22.22.22.22  rtt=3.17ms rc=8(DSRtrMatchLabel) rsc=1  
+3  32.32.32.32  rtt=7.08ms rc=8(DSRtrMatchLabel) rsc=1  
+4  31.31.31.31  rtt=4.69ms rc=3(EgressRtr) rsc=1 
+```
+
+To validate the path traffic would take without FlexAlgo you can run this command:
+
+``` text
+A:admin@dal1# oam lsp-trace sr-isis prefix 31.31.31.31/32 source-ip-address 11.11.11.11               
+lsp-trace to 31.31.31.31/32: 1 hops min, 30 hops max, 104 byte packets
+1  21.21.21.21  rtt=4.35ms rc=8(DSRtrMatchLabel) rsc=1  
+2  31.31.31.31  rtt=5.92ms rc=3(EgressRtr) rsc=1 
+```
