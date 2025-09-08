@@ -1,8 +1,8 @@
 configure {
     card 1 {
-        card-type imm6-qsfpdd+48-sfp56
+        card-type iom-1
         mda 1 {
-            mda-type m6-qsfpdd+48-sfp56
+            mda-type me6-100gb-qsfp28
         }
     }
     policy-options {

@@ -8,10 +8,10 @@ This is how the topology will look:
 ![topology](sr-flexalgo-lab.clab.drawio.svg)
 
 
-In order to deploy the lab you will need to have a copy of the SROS 25.3.R2 image. This can be imported into docker using the following command:
+In order to deploy the lab you will need to have a copy of the SR-SIM 25.7.R1 image. This can be imported into docker using the following command:
 
 ``` bash
-sudo docker load -i sros.tar.gz
+sudo docker load -i srsim.tar.gz
 ```
 
 To validate the image has been loaded you can run:
@@ -21,11 +21,11 @@ docker image list
 You should see the following:
 
 ``` text
-REPOSITORY                          TAG            IMAGE ID       CREATED         SIZE
-vrnetlab/nokia_sros                 25.3.R2        2bb661ed612e   6 weeks ago     971MB
+REPOSITORY                                    TAG           IMAGE ID       CREATED         SIZE
+registry.srlinux.dev/pub/nokia_srsim          25.7.R1       8c69dafa63f8   2 days ago      1.97GB
 ```
 
-Once the correct SROS image has been loaded you must ensure you have the license file called `sros25.lic` downloaded and loaded into the project folder.
+Once the correct SROS image has been loaded you must ensure you have the license file called `srsim25.lic` downloaded and loaded into the project folder.
 
 With the image and license file correctly loaded, to deploy the lab type:
 
@@ -38,45 +38,45 @@ The deployment will wait for the SR OS nodes to boot up.
 At the end of the deployment, the following table will be displayed. Wait for the sros boot to be completed (see next section), before trying to login to sros.
 
 ```bash
-╭─────────────┬────────────────────────────────────┬───────────┬───────────────────╮
-│     Name    │             Kind/Image             │   State   │   IPv4/6 Address  │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ chi1        │ nokia_sros                         │ running   │ 172.20.20.3       │
-│             │ vrnetlab/nokia_sros:25.3.R2        │ (healthy) │ 3fff:172:20:20::3 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ chi2        │ nokia_sros                         │ running   │ 172.20.20.9       │
-│             │ vrnetlab/nokia_sros:25.3.R2        │ (healthy) │ 3fff:172:20:20::9 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ client-chi1 │ linux                              │ running   │ 172.20.20.6       │
-│             │ ghcr.io/srl-labs/network-multitool │           │ 3fff:172:20:20::6 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ client-chi2 │ linux                              │ running   │ 172.20.20.10      │
-│             │ ghcr.io/srl-labs/network-multitool │           │ 3fff:172:20:20::a │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ client-dal1 │ linux                              │ running   │ 172.20.20.12      │
-│             │ ghcr.io/srl-labs/network-multitool │           │ 3fff:172:20:20::c │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ client-dal2 │ linux                              │ running   │ 172.20.20.5       │
-│             │ ghcr.io/srl-labs/network-multitool │           │ 3fff:172:20:20::5 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ client-nyc1 │ linux                              │ running   │ 172.20.20.7       │
-│             │ ghcr.io/srl-labs/network-multitool │           │ 3fff:172:20:20::7 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ client-nyc2 │ linux                              │ running   │ 172.20.20.2       │
-│             │ ghcr.io/srl-labs/network-multitool │           │ 3fff:172:20:20::2 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ dal1        │ nokia_sros                         │ running   │ 172.20.20.11      │
-│             │ vrnetlab/nokia_sros:25.3.R2        │ (healthy) │ 3fff:172:20:20::b │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ dal2        │ nokia_sros                         │ running   │ 172.20.20.4       │
-│             │ vrnetlab/nokia_sros:25.3.R2        │ (healthy) │ 3fff:172:20:20::4 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ nyc1        │ nokia_sros                         │ running   │ 172.20.20.8       │
-│             │ vrnetlab/nokia_sros:25.3.R2        │ (healthy) │ 3fff:172:20:20::8 │
-├─────────────┼────────────────────────────────────┼───────────┼───────────────────┤
-│ nyc2        │ nokia_sros                         │ running   │ 172.20.20.13      │
-│             │ vrnetlab/nokia_sros:25.3.R2        │ (healthy) │ 3fff:172:20:20::d │
-╰─────────────┴────────────────────────────────────┴───────────┴───────────────────╯
+╭─────────────┬──────────────────────────────────────────────┬─────────┬───────────────────╮
+│     Name    │                  Kind/Image                  │  State  │   IPv4/6 Address  │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ chi1        │ nokia_srsim                                  │ running │ 172.20.20.4       │
+│             │ registry.srlinux.dev/pub/nokia_srsim:25.7.R1 │         │ 3fff:172:20:20::4 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ chi2        │ nokia_srsim                                  │ running │ 172.20.20.3       │
+│             │ registry.srlinux.dev/pub/nokia_srsim:25.7.R1 │         │ 3fff:172:20:20::3 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ client-chi1 │ linux                                        │ running │ 172.20.20.9       │
+│             │ ghcr.io/srl-labs/network-multitool           │         │ 3fff:172:20:20::9 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ client-chi2 │ linux                                        │ running │ 172.20.20.13      │
+│             │ ghcr.io/srl-labs/network-multitool           │         │ 3fff:172:20:20::d │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ client-dal1 │ linux                                        │ running │ 172.20.20.10      │
+│             │ ghcr.io/srl-labs/network-multitool           │         │ 3fff:172:20:20::a │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ client-dal2 │ linux                                        │ running │ 172.20.20.5       │
+│             │ ghcr.io/srl-labs/network-multitool           │         │ 3fff:172:20:20::5 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ client-nyc1 │ linux                                        │ running │ 172.20.20.12      │
+│             │ ghcr.io/srl-labs/network-multitool           │         │ 3fff:172:20:20::c │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ client-nyc2 │ linux                                        │ running │ 172.20.20.7       │
+│             │ ghcr.io/srl-labs/network-multitool           │         │ 3fff:172:20:20::7 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ dal1        │ nokia_srsim                                  │ running │ 172.20.20.2       │
+│             │ registry.srlinux.dev/pub/nokia_srsim:25.7.R1 │         │ 3fff:172:20:20::2 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ dal2        │ nokia_srsim                                  │ running │ 172.20.20.8       │
+│             │ registry.srlinux.dev/pub/nokia_srsim:25.7.R1 │         │ 3fff:172:20:20::8 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ nyc1        │ nokia_srsim                                  │ running │ 172.20.20.6       │
+│             │ registry.srlinux.dev/pub/nokia_srsim:25.7.R1 │         │ 3fff:172:20:20::6 │
+├─────────────┼──────────────────────────────────────────────┼─────────┼───────────────────┤
+│ nyc2        │ nokia_srsim                                  │ running │ 172.20.20.11      │
+│             │ registry.srlinux.dev/pub/nokia_srsim:25.7.R1 │         │ 3fff:172:20:20::b │
+╰─────────────┴──────────────────────────────────────────────┴─────────┴───────────────────╯
 ```
 
 ### Monitoring the boot process

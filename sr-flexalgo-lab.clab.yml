@@ -3,12 +3,11 @@ name: sr-flexalgo-lab
 prefix: ""
 topology:
   defaults:
-    kind: nokia_sros
+    kind: nokia_srsim
   kinds:
-    nokia_sros:
-      image: vrnetlab/nokia_sros:25.3.R2
-      type: ixr-xs
-      license: sros25.lic
+    nokia_srsim:
+      image: registry.srlinux.dev/pub/nokia_srsim:25.7.R1
+      license: srsim25.lic
     linux:
       image: ghcr.io/srl-labs/network-multitool
   nodes:
@@ -55,16 +54,16 @@ topology:
         - ip address add 192.168.32.32/24 dev eth1
         - ip route add 192.168.0.0/16 via 192.168.32.254 dev eth1
   links:
-    - endpoints: ["dal1:eth1", "chi1:eth1"]
-    - endpoints: ["dal2:eth1", "chi2:eth1"]
-    - endpoints: ["chi1:eth2", "nyc1:eth1"]
-    - endpoints: ["chi2:eth2", "nyc2:eth1"]
-    - endpoints: ["dal1:eth4", "dal2:eth4"]
-    - endpoints: ["chi1:eth4", "chi2:eth4"]
-    - endpoints: ["nyc1:eth4", "nyc2:eth4"]
-    - endpoints: ["client-dal1:eth1", "dal1:eth6"]
-    - endpoints: ["client-dal2:eth1", "dal2:eth6"]
-    - endpoints: ["client-chi1:eth1", "chi1:eth6"]
-    - endpoints: ["client-chi2:eth1", "chi2:eth6"]
-    - endpoints: ["client-nyc1:eth1", "nyc1:eth6"]
-    - endpoints: ["client-nyc2:eth1", "nyc2:eth6"]
+    - endpoints: ["dal1:e1-1-c1-1", "chi1:e1-1-c1-1"]
+    - endpoints: ["dal2:e1-1-c1-1", "chi2:e1-1-c1-1"]
+    - endpoints: ["chi1:e1-1-c2-1", "nyc1:e1-1-c1-1"]
+    - endpoints: ["chi2:e1-1-c2-1", "nyc2:e1-1-c1-1"]
+    - endpoints: ["dal1:e1-1-c4-1", "dal2:e1-1-c4-1"]
+    - endpoints: ["chi1:e1-1-c4-1", "chi2:e1-1-c4-1"]
+    - endpoints: ["nyc1:e1-1-c4-1", "nyc2:e1-1-c4-1"]
+    - endpoints: ["client-dal1:eth1", "dal1:e1-1-c6-1"]
+    - endpoints: ["client-dal2:eth1", "dal2:e1-1-c6-1"]
+    - endpoints: ["client-chi1:eth1", "chi1:e1-1-c6-1"]
+    - endpoints: ["client-chi2:eth1", "chi2:e1-1-c6-1"]
+    - endpoints: ["client-nyc1:eth1", "nyc1:e1-1-c6-1"]
+    - endpoints: ["client-nyc2:eth1", "nyc2:e1-1-c6-1"]
