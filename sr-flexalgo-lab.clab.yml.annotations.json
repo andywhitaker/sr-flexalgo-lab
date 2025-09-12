@@ -77,7 +77,7 @@
     },
     {
       "id": "client-dal1",
-      "icon": "router",
+      "icon": "client",
       "position": {
         "x": 147,
         "y": 189
@@ -89,7 +89,7 @@
     },
     {
       "id": "client-dal2",
-      "icon": "router",
+      "icon": "client",
       "position": {
         "x": 147,
         "y": 315
@@ -101,7 +101,7 @@
     },
     {
       "id": "client-chi1",
-      "icon": "router",
+      "icon": "client",
       "position": {
         "x": 357,
         "y": 119
@@ -113,7 +113,7 @@
     },
     {
       "id": "client-chi2",
-      "icon": "router",
+      "icon": "client",
       "position": {
         "x": 357,
         "y": 399
@@ -125,7 +125,7 @@
     },
     {
       "id": "client-nyc1",
-      "icon": "router",
+      "icon": "client",
       "position": {
         "x": 553,
         "y": 189
@@ -137,7 +137,7 @@
     },
     {
       "id": "client-nyc2",
-      "icon": "router",
+      "icon": "client",
       "position": {
         "x": 553,
         "y": 315
