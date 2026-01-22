@@ -189,33 +189,29 @@ configure {
         bgp {
             group "evpn" {
                 peer-as 65500
+                type internal
                 family {
                     evpn true
                 }
             }
             neighbor "11.11.11.11" {
                 group "evpn"
-                multihop 6
                 local-address 21.21.21.21
             }
             neighbor "12.12.12.12" {
                 group "evpn"
-                multihop 6
                 local-address 21.21.21.21
             }
             neighbor "22.22.22.22" {
                 group "evpn"
-                multihop 6
                 local-address 21.21.21.21
             }
             neighbor "31.31.31.31" {
                 group "evpn"
-                multihop 6
                 local-address 21.21.21.21
             }
             neighbor "32.32.32.32" {
                 group "evpn"
-                multihop 6
                 local-address 21.21.21.21
             }
         }
