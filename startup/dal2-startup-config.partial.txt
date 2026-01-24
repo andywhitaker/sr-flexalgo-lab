@@ -150,6 +150,9 @@ configure {
             }
         }
         bgp {
+            rapid-update {
+                evpn true
+            }
             group "evpn" {
                 peer-as 65500
                 type internal
