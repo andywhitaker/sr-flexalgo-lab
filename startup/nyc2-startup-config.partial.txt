@@ -231,8 +231,10 @@ configure {
         rsvp {
             admin-state enable
             interface "To-CHI2" {
+                admin-state disable
             }
             interface "To-NYC1" {
+                admin-state disable
             }
         }
     }
