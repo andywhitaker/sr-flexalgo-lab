@@ -13,7 +13,8 @@
       "geoCoordinates": {
         "lat": 49.00649598027853,
         "lng": 9.76251096692698
-      }
+      },
+      "interfacePattern": "1/1/c{n}/1"
     },
     {
       "id": "dal2",
@@ -25,7 +26,8 @@
       "geoCoordinates": {
         "lat": 48.88567174088071,
         "lng": 9.82220729179273
-      }
+      },
+      "interfacePattern": "1/1/c{n}/1"
     },
     {
       "id": "chi1",
@@ -37,7 +39,8 @@
       "geoCoordinates": {
         "lat": 49.00598102631802,
         "lng": 9.580126994046466
-      }
+      },
+      "interfacePattern": "1/1/c{n}/1"
     },
     {
       "id": "chi2",
@@ -49,7 +52,8 @@
       "geoCoordinates": {
         "lat": 48.82844253186874,
         "lng": 9.264353707109382
-      }
+      },
+      "interfacePattern": "1/1/c{n}/1"
     },
     {
       "id": "nyc1",
@@ -61,7 +65,8 @@
       "geoCoordinates": {
         "lat": 48.937686259093375,
         "lng": 9.50641939603107
-      }
+      },
+      "interfacePattern": "1/1/c{n}/1"
     },
     {
       "id": "nyc2",
@@ -73,7 +78,8 @@
       "geoCoordinates": {
         "lat": 49.39002963593118,
         "lng": 9.126298760406002
-      }
+      },
+      "interfacePattern": "1/1/c{n}/1"
     },
     {
       "id": "client-dal1",
@@ -95,8 +101,8 @@
         "y": 315
       },
       "geoCoordinates": {
-        "lat": 49.459683894775914,
-        "lng": 9.765577874400357
+        "lat": 49.18884844478124,
+        "lng": 9.518008978564172
       }
     },
     {

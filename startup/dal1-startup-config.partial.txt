@@ -274,17 +274,6 @@ configure {
                     }
                 }
             }
-            bgp-ipvpn {
-                mpls {
-                    route-distinguisher "11.11.11.11:200"
-                    vrf-import {
-                        policy ["Tenant1-Import"]
-                    }
-                    vrf-export {
-                        policy ["Tenant1-Export"]
-                    }
-                }
-            }
             interface "to-client-dal1" {
                 ipv4 {
                     primary {
